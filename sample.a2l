@@ -47,8 +47,8 @@ ASAP2_VERSION 1 61
 
   /begin CHARACTERISTIC Battery_Voltage
     "Battery Voltage in Volts"
-    VALUE 0x3030
-    ECU_ADDRESS 0x3030
+    VALUE 0x3090
+    ECU_ADDRESS 0x3090
     TYPE VALUE
     FORMAT "%2.2"
     UNIT "V"

@@ -9,3 +9,10 @@ Updated sample.a2l at 20251102_213313
 0x1020 → 0x2020
 0x1030 → 0x3030
 Total replacements: 8
+
+Updated sample.a2l at 20251102_213906
+0x1000 → 0x2000
+0x1010 → 0x2010
+0x1020 → 0x2020
+0x3030 → 0x3090
+Total replacements: 2
