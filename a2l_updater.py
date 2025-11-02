@@ -22,9 +22,9 @@ def update_a2l_file(a2l_file, address_map):
 
     if not os.path.exists(backup_file):
         shutil.copy(a2l_file, backup_file)
-        print(f"📦 Backup created: {backup_file}")
+        print(f" Backup created: {backup_file}")
     else:
-        print(f"ℹ️ Using existing backup: {backup_file}")
+        print(f" Using existing backup: {backup_file}")
 
     updated_lines = []
     changes = 0
@@ -48,7 +48,7 @@ def update_a2l_file(a2l_file, address_map):
             log.write(f"{old_addr} → {new_addr}\n")
         log.write(f"Total replacements: {changes}\n")
 
-    print(f"✅ Updated {a2l_file} successfully! Total replacements: {changes}")
+    print(f" Updated {a2l_file} successfully! Total replacements: {changes}")
 
 
 def main():
@@ -56,11 +56,11 @@ def main():
     a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
 
     if not a2l_file:
-        print("❌ No .a2l file found in the current directory.")
+        print(" No .a2l file found in the current directory.")
         return
 
     if not os.path.exists(ini_file):
-        print("❌ address.ini file not found.")
+        print(" address.ini file not found.")
         return
 
     address_map = load_address_map(ini_file)
