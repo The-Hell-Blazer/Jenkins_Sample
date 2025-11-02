@@ -1,63 +1,52 @@
 import os
-import re
+import shutil
+import datetime
 import configparser
-from datetime import datetime
 
-def find_a2l_file():
-    for file in os.listdir('.'):
-        if file.endswith('.a2l'):
-            return file
-    raise FileNotFoundError("No .a2l file found in the current directory.")
-
-def load_address_mappings(ini_file):
+def load_address_map(ini_file):
     config = configparser.ConfigParser()
-    config.read(ini_file)
+    config.read(ini_file, encoding='utf-8')
     address_map = {}
     for section in config.sections():
-        for key, value in config.items(section):
-            address_map[key] = value
+        for key in config[section]:
+            address_map[key.upper()] = config[section][key]
     return address_map
 
 def update_a2l_file(a2l_file, address_map):
-    backup_file = a2l_file.replace('.a2l', f'_backup_{datetime.now().strftime("%Y%m%d_%H%M%S")}.a2l')
-    os.rename(a2l_file, backup_file)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_file = f"{os.path.splitext(a2l_file)[0]}_backup_{timestamp}.a2l"
+    shutil.copy(a2l_file, backup_file)
     print(f"Backup created: {backup_file}")
 
-    with open(backup_file, 'r', encoding='utf-8', errors='ignore') as f:
-        content = f.read()
+    updated_lines = []
+    with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
+        for line in infile:
+            for var, new_addr in address_map.items():
+                if var in line:
+                    print(f"Updating {var} → {new_addr}")
+                    line = line.replace(var, new_addr)
+            updated_lines.append(line)
 
-    replacements = []
-    for old_addr, new_addr in address_map.items():
-        pattern = re.compile(rf'\b{old_addr}\b', re.IGNORECASE)
-        if pattern.search(content):
-            content = pattern.sub(new_addr, content)
-            replacements.append(f"{old_addr} → {new_addr}")
+    with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
+        outfile.writelines(updated_lines)
 
-    new_file = a2l_file 
-    with open(new_file, 'w', encoding='utf-8') as f:
-        f.write(content)
+    with open("update_log.txt", "w", encoding="utf-8", errors="replace") as log:
+        log.write(f"Updated {a2l_file} at {timestamp}\n")
+        for var, new_addr in address_map.items():
+            log.write(f"{var} → {new_addr}\n")
 
-    with open("address_update.log", "w") as log:
-        log.write("Address Update Log\n")
-        log.write("===================\n")
-        for line in replacements:
-            log.write(line + "\n")
-
-    print(f"Updated .a2l file generated: {new_file}")
-    print("Replacements written to address_update.log")
-    return new_file, backup_file
+    print(f"Updated {a2l_file} successfully!")
 
 def main():
     ini_file = "address.ini"
-    if not os.path.exists(ini_file):
-        raise FileNotFoundError("address.ini file not found in the repository.")
+    a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l")), None)
 
-    a2l_file = find_a2l_file()
-    print(f"Found A2L file: {a2l_file}")
+    if not a2l_file:
+        print("❌ No .a2l file found in the current directory.")
+        return
 
-    address_map = load_address_mappings(ini_file)
+    address_map = load_address_map(ini_file)
     print(f"Loaded {len(address_map)} address mappings from {ini_file}")
-
     update_a2l_file(a2l_file, address_map)
 
 if __name__ == "__main__":
