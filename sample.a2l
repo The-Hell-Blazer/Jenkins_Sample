@@ -45,6 +45,15 @@ ASAP2_VERSION 1 61
     UNIT "C"
   /end CHARACTERISTIC
 
+/begin CHARACTERISTIC Coolant_Temperature2
+    "Coolant Temperature2 in Celsius"
+    VALUE 0x2020
+    ECU_ADDRESS 0x1080
+    TYPE VALUE
+    FORMAT "%3.1"
+    UNIT "C"
+  /end CHARACTERISTIC
+
   /begin CHARACTERISTIC Battery_Voltage
     "Battery Voltage in Volts"
     VALUE 0x2030
