@@ -99,7 +99,31 @@ def update_a2l_file(a2l_file, address_map):
         log.write(f"Unchanged addresses: {unchanged_count}\n")
         log.write(f"Total replacement occurrences (all lines): {total_replacement_occurrences}\n")
 
-    print(f" Updated {a
+    print(f" Updated {a2l_file} successfully!")
+    print(f" Unique addresses changed: {changed_count}")
+    print(f" Unchanged addresses: {unchanged_count}")
+    print(f" Total occurrences replaced: {total_replacement_occurrences}")
+
+
+def main():
+    ini_file = "address.ini"
+    a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
+
+    if not a2l_file:
+        print(" No .a2l file found in the current directory.")
+        return
+
+    if not os.path.exists(ini_file):
+        print(" address.ini file not found.")
+        return
+
+    address_map = load_address_map(ini_file)
+    print(f"Loaded {len(address_map)} address mappings from {ini_file}")
+    update_a2l_file(a2l_file, address_map)
+
+
+if __name__ == "__main__":
+    main()
 
 
 
