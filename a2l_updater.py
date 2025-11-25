@@ -27,7 +27,7 @@ def update_a2l_file(a2l_file, address_map):
         print(f" Using existing backup: {backup_file}")
 
     updated_lines = []
-    changes = 0
+    total_replacement_occurrences = 0
     changed_addresses = set()
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
@@ -35,37 +35,46 @@ def update_a2l_file(a2l_file, address_map):
             original_line = line
             for old_addr, new_addr in address_map.items():
                 pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
+
                 if re.search(pattern, line):
                     line = re.sub(pattern, new_addr, line)
-                    changes += 1
+                    total_replacement_occurrences += 1
                     changed_addresses.add(old_addr)
+
             updated_lines.append(line)
 
+    # Write back updated A2L
     with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
         outfile.writelines(updated_lines)
 
-    total_addresses = len(address_map)
+    # Stats
     changed_count = len(changed_addresses)
-    unchanged_count = total_addresses - changed_count
+    unchanged_count = len(address_map) - changed_count
 
-    # Write bar graph metrics CSV
-    with open("bar_metrics.csv", "w") as bar_csv:
+    # ------------------------------
+    #  Write CSV for Jenkins BAR GRAPH
+    # ------------------------------
+    with open("bar_metrics.csv", "w", encoding="utf-8") as bar_csv:
         bar_csv.write("Category,Count\n")
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # Generate HTML bar chart
-    bar_html = f"""
+    # ------------------------------
+    #  Create HTML for richer visualization (Chart.js)
+    # ------------------------------
+    html_content = f"""
     <html>
     <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
     <h3>A2L Address Update Summary</h3>
+
     <canvas id="barChart" width="400" height="200"></canvas>
 
     <script>
     var ctx = document.getElementById('barChart').getContext('2d');
+
     new Chart(ctx, {{
         type: 'bar',
         data: {{
@@ -85,40 +94,24 @@ def update_a2l_file(a2l_file, address_map):
         }}
     }});
     </script>
+
     </body>
     </html>
     """
 
-    with open("bar_chart.html", "w") as htmlfile:
-        htmlfile.write(bar_html)
+    with open("bar_chart.html", "w", encoding="utf-8") as htmlfile:
+        htmlfile.write(html_content)
 
+    # ------------------------------
+    #  Log updates
+    # ------------------------------
     with open("update_log.txt", "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
-        log.write(f"Total unique addresses changed: {changed_count}\n")
-        log.write(f"Total replacements (all occurrences): {changes}\n")
+        log.write(f"Unique addresses changed: {changed_count}\n")
+        log.write(f"Unchanged addresses: {unchanged_count}\n")
+        log.write(f"Total replacement occurrences (all lines): {total_replacement_occurrences}\n")
 
-    print(f" Updated {a2l_file} successfully! Unique addresses changed: {changed_count}, unchanged: {unchanged_count}")
-
-
-def main():
-    ini_file = "address.ini"
-    a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
-
-    if not a2l_file:
-        print(" No .a2l file found in the current directory.")
-        return
-
-    if not os.path.exists(ini_file):
-        print(" address.ini file not found.")
-        return
-
-    address_map = load_address_map(ini_file)
-    print(f"Loaded {len(address_map)} address mappings from {ini_file}")
-    update_a2l_file(a2l_file, address_map)
-
-
-if __name__ == "__main__":
-    main()
+    print(f" Updated {a
 
 
 
