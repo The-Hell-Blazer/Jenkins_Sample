@@ -82,10 +82,14 @@ def update_a2l_file(a2l_file, address_map):
                 backgroundColor: ['#4CAF50', '#FF5733']
             }}]
         }},
+        
         options: {{
             scales: {{
                 y: {{
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {{
+                        stepSize: 1,
+                        precision: 0
                 }}
             }}
         }}
