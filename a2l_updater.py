@@ -58,7 +58,7 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # ----------- FIXED HTML CHART CODE (Corrected closing braces + proper ticks) -----------
+    # ------------ FIXED CHART.JS CODE (Forces integer Y-axis) -------------
     html_content = f"""
     <html>
     <head>
@@ -85,10 +85,14 @@ def update_a2l_file(a2l_file, address_map):
         options: {{
             scales: {{
                 y: {{
+                    type: 'linear',
                     beginAtZero: true,
                     ticks: {{
                         stepSize: 1,
-                        precision: 0
+                        callback: function(value) {{
+                            if (Number.isInteger(value)) return value;
+                            return '';
+                        }}
                     }}
                 }}
             }}
@@ -99,7 +103,7 @@ def update_a2l_file(a2l_file, address_map):
     </body>
     </html>
     """
-    # ---------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     html_report_path = os.path.join(report_dir, "bar_chart.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
