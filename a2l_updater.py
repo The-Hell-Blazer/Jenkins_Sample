@@ -43,25 +43,17 @@ def update_a2l_file(a2l_file, address_map):
 
             updated_lines.append(line)
 
-    # Write back updated A2L
     with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
         outfile.writelines(updated_lines)
 
-    # Stats
     changed_count = len(changed_addresses)
     unchanged_count = len(address_map) - changed_count
 
-    # ------------------------------
-    #  Write CSV for Jenkins BAR GRAPH
-    # ------------------------------
     with open("bar_metrics.csv", "w", encoding="utf-8") as bar_csv:
         bar_csv.write("Category,Count\n")
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # ------------------------------
-    #  Create HTML for richer visualization (Chart.js)
-    # ------------------------------
     html_content = f"""
     <html>
     <head>
@@ -101,10 +93,6 @@ def update_a2l_file(a2l_file, address_map):
 
     with open("bar_chart.html", "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
-
-    # ------------------------------
-    #  Log updates
-    # ------------------------------
     with open("update_log.txt", "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
         log.write(f"Unique addresses changed: {changed_count}\n")
