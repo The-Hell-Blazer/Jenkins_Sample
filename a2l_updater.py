@@ -55,9 +55,6 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # ----------------------
-    # Smaller chart size + renamed HTML
-    # ----------------------
     html_content = f"""
     <html>
     <head>
@@ -103,7 +100,7 @@ def update_a2l_file(a2l_file, address_map):
     </html>
     """
 
-    html_report_path = os.path.join(report_dir, "Address Change Analysis Report.html")
+    html_report_path = os.path.join(report_dir, "Address_Change_Analysis_Report.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
 
