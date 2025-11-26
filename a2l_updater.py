@@ -55,7 +55,6 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # -------------------- UPDATED HTML REPORT --------------------
     html_content = f"""
     <html>
     <head>
@@ -78,14 +77,14 @@ def update_a2l_file(a2l_file, address_map):
                     label: 'Changed',
                     data: [{{ x: 2.5, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
-                    barPercentage: 0.3,
+                    barPercentage: 1.0,
                     categoryPercentage: 1.0
                 }},
                 {{
                     label: 'Unchanged',
                     data: [{{ x: 7.5, y: {unchanged_count} }}],
                     backgroundColor: '#FF5733',
-                    barPercentage: 0.3,
+                    barPercentage: 1.0,
                     categoryPercentage: 1.0
                 }}
             ]
@@ -125,7 +124,6 @@ def update_a2l_file(a2l_file, address_map):
     </body>
     </html>
     """
-    # -------------------------------------------------------------
 
     html_report_path = os.path.join(report_dir, "Address_Change_Analysis_Report.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
