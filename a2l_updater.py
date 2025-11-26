@@ -35,15 +35,12 @@ def update_a2l_file(a2l_file, address_map):
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
         for line in infile:
-            original_line = line
             for old_addr, new_addr in address_map.items():
                 pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
-
                 if re.search(pattern, line):
                     line = re.sub(pattern, new_addr, line)
                     total_replacement_occurrences += 1
                     changed_addresses.add(old_addr)
-
             updated_lines.append(line)
 
     with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
@@ -58,16 +55,19 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    # ------------ FIXED CHART.JS CODE (Forces integer Y-axis) -------------
+    # ----------------------
+    # Smaller chart size + renamed HTML
+    # ----------------------
     html_content = f"""
     <html>
     <head>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
-    <h3>A2L Address Update Summary</h3>
 
-    <canvas id="barChart" width="400" height="200"></canvas>
+    <h3>Address Change Analysis Report</h3>
+
+    <canvas id="barChart" width="250" height="120"></canvas>
 
     <script>
     var ctx = document.getElementById('barChart').getContext('2d');
@@ -83,15 +83,14 @@ def update_a2l_file(a2l_file, address_map):
             }}]
         }},
         options: {{
+            responsive: false,
             scales: {{
                 y: {{
-                    type: 'linear',
                     beginAtZero: true,
                     ticks: {{
                         stepSize: 1,
                         callback: function(value) {{
-                            if (Number.isInteger(value)) return value;
-                            return '';
+                            return Number.isInteger(value) ? value : '';
                         }}
                     }}
                 }}
@@ -103,18 +102,17 @@ def update_a2l_file(a2l_file, address_map):
     </body>
     </html>
     """
-    # ----------------------------------------------------------------------
 
-    html_report_path = os.path.join(report_dir, "bar_chart.html")
+    html_report_path = os.path.join(report_dir, "Address Change Analysis Report.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
-    
+
     log_file = os.path.join(report_dir, "update_log.txt")
     with open(log_file, "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
         log.write(f"Unique addresses changed: {changed_count}\n")
         log.write(f"Unchanged addresses: {unchanged_count}\n")
-        log.write(f"Total replacement occurrences (all lines): {total_replacement_occurrences}\n")
+        log.write(f"Total replacement occurrences: {total_replacement_occurrences}\n")
 
     print(f" Updated {a2l_file} successfully!")
     print(f" Unique addresses changed: {changed_count}")
