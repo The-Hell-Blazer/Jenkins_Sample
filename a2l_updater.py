@@ -64,7 +64,7 @@ def update_a2l_file(a2l_file, address_map):
 
     <h3>Address Change Analysis Report</h3>
 
-    <canvas id="barChart" width="1000" height="500"></canvas>
+    <canvas id="barChart" width="1000" height="1000"></canvas>
 
     <script>
     var ctx = document.getElementById('barChart').getContext('2d');
@@ -75,14 +75,14 @@ def update_a2l_file(a2l_file, address_map):
             datasets: [
                 {{
                     label: 'Changed',
-                    data: [{{ x: 2.5, y: {changed_count} }}],
+                    data: [{{ x: 2, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
                     barPercentage: 1.0,
                     categoryPercentage: 1.0
                 }},
                 {{
                     label: 'Unchanged',
-                    data: [{{ x: 7.5, y: {unchanged_count} }}],
+                    data: [{{ x: 2, y: {unchanged_count} }}],
                     backgroundColor: '#FF5733',
                     barPercentage: 1.0,
                     categoryPercentage: 1.0
