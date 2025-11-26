@@ -55,6 +55,7 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
+    # -------------------- UPDATED HTML REPORT --------------------
     html_content = f"""
     <html>
     <head>
@@ -62,103 +63,69 @@ def update_a2l_file(a2l_file, address_map):
     </head>
     <body>
 
-    <h3>Address Change Analysis</h3>
+    <h3>Address Change Analysis Report</h3>
 
-    <canvas id="barChart" width="1000" height="750"></canvas>
-      <canvas id="barChart" width="600" height="300"></canvas>
+    <canvas id="barChart" width="1000" height="500"></canvas>
 
-        <script>
-        var ctx = document.getElementById('barChart').getContext('2d');
-        
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                datasets: [
-                    {
-                        label: 'Changed',
-                        data: [{ x: 2.5, y: {{changed_count}} }],  // centered between 1–4
-                        backgroundColor: '#4CAF50',
-                        barPercentage: 0.3,
-                        categoryPercentage: 1.0
-                    },
-                    {
-                        label: 'Unchanged',
-                        data: [{ x: 7.5, y: {{unchanged_count}} }], // centered between 6–9
-                        backgroundColor: '#FF5733',
-                        barPercentage: 0.3,
-                        categoryPercentage: 1.0
-                    }
-                ]
-            },
-        
-            options: {
-                responsive: false,
-        
-                parsing: false,
-        
-                scales: {
-                    x: {
-                        type: 'linear',
-                        min: 1,
-                        max: 10,
-                        ticks: {
-                            stepSize: 1
-                        },
-                        title: {
-                            display: true,
-                            text: "X-Axis"
-                        }
-                    },
-        
-                    y: {
-                        beginAtZero: true,
-                        max: 10,
-                        ticks: {
-                            stepSize: 1
-                        },
-                        title: {
-                            display: true,
-                            text: "Address Count"
-                        }
-                    }
-                }
-            }
-        });
-</script>
+    <script>
+    var ctx = document.getElementById('barChart').getContext('2d');
 
-    # <script>
-    # var ctx = document.getElementById('barChart').getContext('2d');
-
-    # new Chart(ctx, {{
-    #     type: 'bar',
-    #     data: {{
-    #         labels: ['Changed', 'Unchanged'],
-    #         datasets: [{{
-    #             label: 'Address Count',
-    #             data: [{changed_count}, {unchanged_count}],
-    #             backgroundColor: ['#4CAF50', '#FF5733']
-    #         }}]
-    #     }},
-    #     options: {{
-    #         responsive: false,
-    #         scales: {{
-    #             y: {{
-    #                 beginAtZero: true,
-    #                 ticks: {{
-    #                     stepSize: 1,
-    #                     callback: function(value) {{
-    #                         return Number.isInteger(value) ? value : '';
-    #                     }}
-    #                 }}
-    #             }}
-    #         }}
-    #     }}
-    # }});
-    # </script>
+    new Chart(ctx, {{
+        type: 'bar',
+        data: {{
+            datasets: [
+                {{
+                    label: 'Changed',
+                    data: [{{ x: 2.5, y: {changed_count} }}],
+                    backgroundColor: '#4CAF50',
+                    barPercentage: 0.3,
+                    categoryPercentage: 1.0
+                }},
+                {{
+                    label: 'Unchanged',
+                    data: [{{ x: 7.5, y: {unchanged_count} }}],
+                    backgroundColor: '#FF5733',
+                    barPercentage: 0.3,
+                    categoryPercentage: 1.0
+                }}
+            ]
+        }},
+        options: {{
+            responsive: false,
+            parsing: false,
+            scales: {{
+                x: {{
+                    type: 'linear',
+                    min: 1,
+                    max: 10,
+                    ticks: {{
+                        stepSize: 1
+                    }},
+                    title: {{
+                        display: true,
+                        text: "X-Axis"
+                    }}
+                }},
+                y: {{
+                    beginAtZero: true,
+                    max: 10,
+                    ticks: {{
+                        stepSize: 1
+                    }},
+                    title: {{
+                        display: true,
+                        text: "Address Count"
+                    }}
+                }}
+            }}
+        }}
+    }});
+    </script>
 
     </body>
     </html>
     """
+    # -------------------------------------------------------------
 
     html_report_path = os.path.join(report_dir, "Address_Change_Analysis_Report.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
