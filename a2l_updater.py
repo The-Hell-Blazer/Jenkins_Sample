@@ -87,7 +87,7 @@ def update_a2l_file(a2l_file, address_map):
                 x: {{
                     title: {{
                         display: true,
-                        text: "Category"
+                        text: "Address"
                     }}
                 }},
                 y: {{
