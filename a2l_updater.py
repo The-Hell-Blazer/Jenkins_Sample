@@ -83,6 +83,10 @@ def update_a2l_file(a2l_file, address_map):
         }},
         options: {{
             responsive: false,
+            plugins: {{
+            legend: {{
+                display: false 
+            }}
             scales: {{
                 x: {{
                     title: {{
@@ -99,7 +103,7 @@ def update_a2l_file(a2l_file, address_map):
                     }},
                     title: {{
                         display: true,
-                        # text: "Address Count"
+                        text: "Address Count"
                     }}
                 }}
             }}
