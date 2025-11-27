@@ -78,7 +78,7 @@ def update_a2l_file(a2l_file, address_map):
                     data: [{{ x: 3, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
                     barPercentage: 2.0,
-                    categoryPercentage: 1.0
+                    # categoryPercentage: 1.0
                 }},
                 {{
                     label: 'Unchanged',
