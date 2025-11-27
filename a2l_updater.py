@@ -76,13 +76,13 @@ def update_a2l_file(a2l_file, address_map):
             datasets: [
                 {{
                     label: 'Changed',
-                    data: [{{ x: 2, y: {CHANGED_COUNT} }}],
+                    data: [{{ x: 2, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
                     barThickness: 80 // Fixed width for bars
                 }},
                 {{
                     label: 'Unchanged',
-                    data: [{{ x: 6, y: {UNCHANGED_COUNT} }}],
+                    data: [{{ x: 6, y: {uchanged_count} }}],
                     backgroundColor: '#FF5733',
                     barThickness: 80 // Same width for consistency
                 }}
