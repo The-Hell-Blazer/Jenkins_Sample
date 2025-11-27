@@ -17,8 +17,7 @@ def load_address_map(ini_file):
 
 
 def update_a2l_file(a2l_file, address_map):
-    report_dir = "reports"
-    os.makedirs(report_dir, exist_ok=True)
+    report_dir = "."  
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_file = f"{os.path.splitext(a2l_file)[0]}_backup.a2l"
@@ -48,7 +47,7 @@ def update_a2l_file(a2l_file, address_map):
 
     changed_count = len(changed_addresses)
     unchanged_count = len(address_map) - changed_count
-
+    
     metrics_file = os.path.join(report_dir, "bar_metrics.csv")
     with open(metrics_file, "w", encoding="utf-8") as bar_csv:
         bar_csv.write("Category,Count\n")
@@ -84,15 +83,13 @@ def update_a2l_file(a2l_file, address_map):
         options: {{
             responsive: false,
             plugins: {{
-            legend: {{
-                display: false 
+                legend: {{
+                    display: false 
                 }}
             }},
             scales: {{
                 x: {{
-                    grid: {{
-                    display: false   
-                }},
+                    grid: {{ display: false }},
                     title: {{
                         display: true,
                         text: "Address"
@@ -101,7 +98,7 @@ def update_a2l_file(a2l_file, address_map):
                 y: {{
                     beginAtZero: true,
                     min: 0,
-                    max:10,
+                    max: 10,
                     ticks: {{
                         stepSize: 1
                     }},
@@ -122,7 +119,7 @@ def update_a2l_file(a2l_file, address_map):
     html_report_path = os.path.join(report_dir, "Address_Change_Analysis_Report.html")
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
-
+        
     log_file = os.path.join(report_dir, "update_log.txt")
     with open(log_file, "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
@@ -134,7 +131,7 @@ def update_a2l_file(a2l_file, address_map):
     print(f" Unique addresses changed: {changed_count}")
     print(f" Unchanged addresses: {unchanged_count}")
     print(f" Total occurrences replaced: {total_replacement_occurrences}")
-    print(f"Report saved inside: {report_dir}/")
+    print(f"Report saved inside workspace root.")
     print(f"HTML report: {html_report_path}")
 
 
