@@ -57,71 +57,71 @@ def update_a2l_file(a2l_file, address_map):
 
     html_content = f"""
     
-<html>
-<head>
-    https://cdn.jsdelivr.net/npm/chart.js
-</head>
-<body>
-
-<h3>Address Change Analysis Report</h3>
-
-<canvas id="barChart" width="1000" height="750"></canvas>
-
-<script>
-var ctx = document.getElementById('barChart').getContext('2d');
-
-new Chart(ctx, {{
-    type: 'bar',
-    data: {{
-        datasets: [
-            {{
-                label: 'Changed',
-                data: [{{ x: 2, y: CHANGED_COUNT }}], // Replace CHANGED_COUNT with your variable
-                backgroundColor: '#4CAF50',
-                barThickness: 80 // Fixed width for bars
-            }},
-            {{
-                label: 'Unchanged',
-                data: [{{ x: 6, y: UNCHANGED_COUNT }}], // Replace UNCHANGED_COUNT with your variable
-                backgroundColor: '#FF5733',
-                barThickness: 80 // Same width for consistency
-            }}
-        ]
-    }},
-    options: {{
-        responsive: false,
-        parsing: false,
-        scales: {{
-            x: {{
-                type: 'linear',
-                min: 1,
-                max: 10,
-                ticks: {{
-                    stepSize: 1
+    <html>
+    <head>
+        https://cdn.jsdelivr.net/npm/chart.js
+    </head>
+    <body>
+    
+    <h3>Address Change Analysis Report</h3>
+    
+    <canvas id="barChart" width="1000" height="750"></canvas>
+    
+    <script>
+    var ctx = document.getElementById('barChart').getContext('2d');
+    
+    new Chart(ctx, {{
+        type: 'bar',
+        data: {{
+            datasets: [
+                {{
+                    label: 'Changed',
+                    data: [{{ x: 2, y: CHANGED_COUNT }}], // Replace CHANGED_COUNT with your variable
+                    backgroundColor: '#4CAF50',
+                    barThickness: 80 // Fixed width for bars
                 }},
-                title: {{
-                    display: true,
-                    text: "X-Axis"
+                {{
+                    label: 'Unchanged',
+                    data: [{{ x: 6, y: UNCHANGED_COUNT }}], // Replace UNCHANGED_COUNT with your variable
+                    backgroundColor: '#FF5733',
+                    barThickness: 80 // Same width for consistency
                 }}
-            }},
-            y: {{
-                beginAtZero: true,
-                max: 10,
-                ticks: {{
-                    stepSize: 1
+            ]
+        }},
+        options: {{
+            responsive: false,
+            parsing: false,
+            scales: {{
+                x: {{
+                    type: 'linear',
+                    min: 1,
+                    max: 10,
+                    ticks: {{
+                        stepSize: 1
+                    }},
+                    title: {{
+                        display: true,
+                        text: "X-Axis"
+                    }}
                 }},
-                title: {{
-                    display: true,
-                    text: "Address Count"
+                y: {{
+                    beginAtZero: true,
+                    max: 10,
+                    ticks: {{
+                        stepSize: 1
+                    }},
+                    title: {{
+                        display: true,
+                        text: "Address Count"
+                    }}
                 }}
             }}
         }}
-    }}
-}});
-</script>
-
-</body>
-</html>
+    }});
+    </script>
+    
+    </body>
+    </html>
 
     
     # <html>
