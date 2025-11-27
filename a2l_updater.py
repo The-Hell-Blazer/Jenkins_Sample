@@ -92,6 +92,8 @@ def update_a2l_file(a2l_file, address_map):
                 }},
                 y: {{
                     beginAtZero: true,
+                    min: 0,
+                    max:10,
                     ticks: {{
                         stepSize: 1
                     }},
