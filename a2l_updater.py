@@ -75,17 +75,17 @@ def update_a2l_file(a2l_file, address_map):
             datasets: [
                 {{
                     label: 'Changed',
-                    data: [{{ x: [2,4], y: {changed_count} }}],
+                    data: [{{ x: 2, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
-                    # barPercentage: 2.0,
-                    # categoryPercentage: 1.0
+                    barPercentage: 2.0,
+                    categoryPercentage: 1.0
                 }},
                 {{
                     label: 'Unchanged',
-                    data: [{{ x: [6,8], y: {unchanged_count} }}],
+                    data: [{{ x: 6, y: {unchanged_count} }}],
                     backgroundColor: '#FF5733',
-                    # barPercentage: 2.0,
-                    # categoryPercentage: 1.0
+                    barPercentage: 2.0,
+                    categoryPercentage: 1.0
                 }}
             ]
         }},
