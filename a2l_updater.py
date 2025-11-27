@@ -56,20 +56,20 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
     html_content = f"""
-    
+       
     <html>
     <head>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
-    
+
     <h3>Address Change Analysis Report</h3>
-    
+
     <canvas id="barChart" width="1000" height="750"></canvas>
-    
+
     <script>
     var ctx = document.getElementById('barChart').getContext('2d');
-    
+
     new Chart(ctx, {{
         type: 'bar',
         data: {{
@@ -78,13 +78,15 @@ def update_a2l_file(a2l_file, address_map):
                     label: 'Changed',
                     data: [{{ x: 2, y: {changed_count} }}],
                     backgroundColor: '#4CAF50',
-                    barThickness: 80 // Fixed width for bars
+                    barPercentage: 2.0,
+                    categoryPercentage: 0.5
                 }},
                 {{
                     label: 'Unchanged',
-                    data: [{{ x: 6, y: {uchanged_count} }}],
+                    data: [{{ x: 6, y: {unchanged_count} }}],
                     backgroundColor: '#FF5733',
-                    barThickness: 80 // Same width for consistency
+                    barPercentage: 2.0,
+                    categoryPercentage: 0.75
                 }}
             ]
         }},
@@ -119,78 +121,9 @@ def update_a2l_file(a2l_file, address_map):
         }}
     }});
     </script>
-    
+
     </body>
     </html>
-
-    
-    # <html>
-    # <head>
-    #     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    # </head>
-    # <body>
-
-    # <h3>Address Change Analysis Report</h3>
-
-    # <canvas id="barChart" width="1000" height="750"></canvas>
-
-    # <script>
-    # var ctx = document.getElementById('barChart').getContext('2d');
-
-    # new Chart(ctx, {{
-    #     type: 'bar',
-    #     data: {{
-    #         datasets: [
-    #             {{
-    #                 label: 'Changed',
-    #                 data: [{{ x: 2, y: {changed_count} }}],
-    #                 backgroundColor: '#4CAF50',
-    #                 barPercentage: 2.0,
-    #                 categoryPercentage: 0.5
-    #             }},
-    #             {{
-    #                 label: 'Unchanged',
-    #                 data: [{{ x: 6, y: {unchanged_count} }}],
-    #                 backgroundColor: '#FF5733',
-    #                 barPercentage: 2.0,
-    #                 categoryPercentage: 0.75
-    #             }}
-    #         ]
-    #     }},
-    #     options: {{
-    #         responsive: false,
-    #         parsing: false,
-    #         scales: {{
-    #             x: {{
-    #                 type: 'linear',
-    #                 min: 1,
-    #                 max: 10,
-    #                 ticks: {{
-    #                     stepSize: 1
-    #                 }},
-    #                 title: {{
-    #                     display: true,
-    #                     text: "X-Axis"
-    #                 }}
-    #             }},
-    #             y: {{
-    #                 beginAtZero: true,
-    #                 max: 10,
-    #                 ticks: {{
-    #                     stepSize: 1
-    #                 }},
-    #                 title: {{
-    #                     display: true,
-    #                     text: "Address Count"
-    #                 }}
-    #             }}
-    #         }}
-    #     }}
-    # }});
-    # </script>
-
-    # </body>
-    # </html>
     """
 
     html_report_path = os.path.join(report_dir, "Address_Change_Analysis_Report.html")
