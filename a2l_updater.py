@@ -55,8 +55,7 @@ def update_a2l_file(a2l_file, address_map):
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
-    html_content = f"""
-       
+    html_content = f"""  
     <html>
     <head>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -73,42 +72,26 @@ def update_a2l_file(a2l_file, address_map):
     new Chart(ctx, {{
         type: 'bar',
         data: {{
-            datasets: [
-                {{
-                    label: 'Changed',
-                    data: [{{ x: 2, y: {changed_count} }}],
-                    backgroundColor: '#4CAF50',
-                    barPercentage: 2.0,
-                    categoryPercentage: 0.5
-                }},
-                {{
-                    label: 'Unchanged',
-                    data: [{{ x: 6, y: {unchanged_count} }}],
-                    backgroundColor: '#FF5733',
-                    barPercentage: 2.0,
-                    categoryPercentage: 0.75
-                }}
-            ]
+            labels: ['Changed', 'Unchanged'],
+            datasets: [{{
+                label: 'Address Count',
+                data: [{changed_count}, {unchanged_count}],
+                backgroundColor: ['#4CAF50', '#FF5733'],
+                barPercentage: 0.6,
+                categoryPercentage: 0.6
+            }}]
         }},
         options: {{
             responsive: false,
-            parsing: false,
             scales: {{
                 x: {{
-                    type: 'linear',
-                    min: 1,
-                    max: 10,
-                    ticks: {{
-                        stepSize: 1
-                    }},
                     title: {{
                         display: true,
-                        text: "X-Axis"
+                        text: "Category"
                     }}
                 }},
                 y: {{
                     beginAtZero: true,
-                    max: 10,
                     ticks: {{
                         stepSize: 1
                     }},
