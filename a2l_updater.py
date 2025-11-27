@@ -90,6 +90,9 @@ def update_a2l_file(a2l_file, address_map):
             }},
             scales: {{
                 x: {{
+                    grid: {{
+                    display: false   
+                }},
                     title: {{
                         display: true,
                         text: "Address"
