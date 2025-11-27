@@ -98,8 +98,8 @@ def update_a2l_file(a2l_file, address_map):
                         stepSize: 1
                     }},
                     title: {{
-                        display: true,
-                        text: "Address Count"
+                        # display: true,
+                        # text: "Address Count"
                     }}
                 }}
             }}
