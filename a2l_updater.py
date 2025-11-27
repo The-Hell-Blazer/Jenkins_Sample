@@ -97,10 +97,10 @@ def update_a2l_file(a2l_file, address_map):
                     ticks: {{
                         stepSize: 1
                     }},
-                    # title: {{
-                    #     display: true,
-                    #     text: "Address Count"
-                    # }}
+                    title: {{
+                        display: true,
+                        text: "Address Count"
+                    }}
                 }}
             }}
         }}
