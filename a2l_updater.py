@@ -59,7 +59,7 @@ def update_a2l_file(a2l_file, address_map):
     
     <html>
     <head>
-        https://cdn.jsdelivr.net/npm/chart.js
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
     
@@ -76,13 +76,13 @@ def update_a2l_file(a2l_file, address_map):
             datasets: [
                 {{
                     label: 'Changed',
-                    data: [{{ x: 2, y: CHANGED_COUNT }}], // Replace CHANGED_COUNT with your variable
+                    data: [{{ x: 2, y: {CHANGED_COUNT} }}],
                     backgroundColor: '#4CAF50',
                     barThickness: 80 // Fixed width for bars
                 }},
                 {{
                     label: 'Unchanged',
-                    data: [{{ x: 6, y: UNCHANGED_COUNT }}], // Replace UNCHANGED_COUNT with your variable
+                    data: [{{ x: 6, y: {UNCHANGED_COUNT} }}],
                     backgroundColor: '#FF5733',
                     barThickness: 80 // Same width for consistency
                 }}
