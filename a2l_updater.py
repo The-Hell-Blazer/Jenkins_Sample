@@ -64,7 +64,7 @@ def update_a2l_file(a2l_file, address_map):
 
     <h3>Address Change Analysis Report</h3>
 
-    <canvas id="barChart" width="1000" height="750"></canvas>
+    <canvas id="barChart" width="750" height="750"></canvas>
 
     <script>
     var ctx = document.getElementById('barChart').getContext('2d');
@@ -97,10 +97,10 @@ def update_a2l_file(a2l_file, address_map):
                     ticks: {{
                         stepSize: 1
                     }},
-                    title: {{
-                        display: true,
-                        text: "Address Count"
-                    }}
+                    # title: {{
+                    #     display: true,
+                    #     text: "Address Count"
+                    # }}
                 }}
             }}
         }}
