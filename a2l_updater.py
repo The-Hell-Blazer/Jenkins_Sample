@@ -85,7 +85,7 @@ def update_a2l_file(a2l_file, address_map):
             responsive: false,
             plugins: {{
             legend: {{
-                display: true 
+                display: false 
                 }}
             }},
             scales: {{
