@@ -87,7 +87,7 @@ def update_a2l_file(a2l_file, address_map):
             legend: {{
                 display: true 
                 }}
-            }}
+            }},
             scales: {{
                 x: {{
                     title: {{
