@@ -1,0 +1,182 @@
+"C1929_uc1_M8P0"
+ASAP2_VERSION 1 61
+
+/begin PROJECT
+   ASAM
+   "_default_Project"
+   /begin HEADER
+      "default_Header"
+      PROJECT_NO ASAM2013
+   /end HEADER
+   /begin MODULE
+      Module_01
+      "default_Module"
+
+//	  /include "asam.aml"
+
+      /begin MOD_PAR "default_ModPar"
+         ADDR_EPK 0x100100FF
+         EPK "EPROM_ID_01"
+         /begin MEMORY_SEGMENT MemorySegment_01
+            "MemorySegment_01"
+            DATA
+            FLASH
+            EXTERN
+            0x1000FFFF
+            0xf0000
+            0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF
+            /begin IF_DATA ETK_XETK
+               ADDRESS_MAPPING
+               0x80810000
+               0xa3010000
+               0xf0000
+            /end IF_DATA
+         /end MEMORY_SEGMENT
+      /end MOD_PAR
+
+      /begin MOD_COMMON "default_ModCommon"
+         DEPOSIT ABSOLUTE
+         BYTE_ORDER MSB_FIRST
+         ALIGNMENT_BYTE 1
+         ALIGNMENT_WORD 2
+         ALIGNMENT_LONG 4
+         ALIGNMENT_FLOAT32_IEEE 4
+         ALIGNMENT_FLOAT64_IEEE 8
+      /end MOD_COMMON
+
+      /begin IF_DATA XCP
+         /begin PROTOCOL_LAYER
+            0x0100
+            2000
+            2000
+            2000
+            65535
+            2000
+            0005
+            0005
+            0x08
+            0x0008
+            BYTE_ORDER_MSB_LAST
+            ADDRESS_GRANULARITY_BYTE
+            SEED_AND_KEY_EXTERNAL_FUNCTION "SeedNKeyXcp.dll"
+         /end PROTOCOL_LAYER
+         /begin DAQ
+            STATIC
+            0x06
+            0x06
+            0x00
+            OPTIMISATION_TYPE_DEFAULT
+            ADDRESS_EXTENSION_FREE
+            IDENTIFICATION_FIELD_TYPE_ABSOLUTE
+            0x04
+            OVERLOAD_INDICATION_EVENT
+            /begin DAQ_LIST
+               0x0
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0x2
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x0
+               EVENT_FIXED 0x0
+            /end DAQ_LIST
+            /begin DAQ_LIST
+               0x1
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0x2
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x2
+               EVENT_FIXED 0x1
+            /end DAQ_LIST
+            /begin DAQ_LIST
+               0x2
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0x2
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x4
+               EVENT_FIXED 0x2
+            /end DAQ_LIST
+            /begin DAQ_LIST
+               0x3
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0x2
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x6
+               EVENT_FIXED 0x3
+            /end DAQ_LIST
+            /begin DAQ_LIST
+               0x5
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0xf
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x8
+               EVENT_FIXED 0x5
+            /end DAQ_LIST
+            /begin DAQ_LIST
+               0x4
+               DAQ_LIST_TYPE DAQ
+               MAX_ODT 0xf
+               MAX_ODT_ENTRIES 0x7
+               FIRST_PID 0x17
+               EVENT_FIXED 0x4
+            /end DAQ_LIST
+            /begin EVENT
+               "Segment 1"
+               "Segment 1"
+               0x0
+               DAQ
+               0x1
+               0x0
+               0
+               0
+            /end EVENT
+            /begin EVENT
+               "Segment 2"
+               "Segment 2"
+               0x1
+               DAQ
+               0x1
+               0x0
+               0
+               0
+            /end EVENT
+            /begin EVENT
+               "Segment 3"
+               "Segment 3"
+               0x2
+               DAQ
+               0x1
+               0x0
+               0
+               0
+            /end EVENT
+            /begin EVENT
+               "Segment 4"
+               "Segment 4"
+               0x3
+               DAQ
+               0x1
+               0x0
+               0
+               0
+            /end EVENT
+            /begin EVENT
+               "Tim100ms"
+               "Tim100ms"
+               0x5
+               DAQ
+               0x1
+               0x1
+               8
+               0
+            /end EVENT
+            /begin EVENT
+               "Time 10ms"
+               "Time 10ms"
+               0x4
+               DAQ
+               0x1
+               0x1
+               7
+               0
+            /end EVENT
+         /end DAQ
+      /end IF_DATA
