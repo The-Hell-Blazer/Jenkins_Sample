@@ -20,7 +20,7 @@ ASAP2_VERSION 1 61
 /begin MODULE Sample_Module "Main ECU Module"
   /begin CHARACTERISTIC Engine_Speed
     "Engine Speed in RPM"
-    VALUE 0x2000
+    VALUE 0x1000
     ECU_ADDRESS 0x1000
     TYPE VALUE
     FORMAT "%6.0"
