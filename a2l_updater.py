@@ -148,7 +148,8 @@ def update_a2l_file(a2l_file, address_map):
 
 def main():
     ini_file = "address.ini"
-    a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
+    a2l_file = "sample.a2l"
+    # a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
 
     if not a2l_file:
         print(" No .a2l file found in the current directory.")
