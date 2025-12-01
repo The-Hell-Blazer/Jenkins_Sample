@@ -2,9 +2,9 @@
 /* File: sample_ecu.a2l */
 /* Description: Example ECU A2L file for address patching test */
 /************************************************/
-
+ 
 ASAP2_VERSION 1 61
-
+ 
 /begin PROJECT Sample_ECU "Sample ECU Project"
 /begin HEADER
   "Sample ECU A2L file for testing"
@@ -16,17 +16,17 @@ ASAP2_VERSION 1 61
     BYTE_ORDER MSB_FIRST
   /end MOD_PAR
 /end HEADER
-
+ 
 /begin MODULE Sample_Module "Main ECU Module"
   /begin CHARACTERISTIC Engine_Speed
     "Engine Speed in RPM"
-    VALUE 0x1000
+    VALUE 0x2000
     ECU_ADDRESS 0x1000
     TYPE VALUE
     FORMAT "%6.0"
     UNIT "rpm"
   /end CHARACTERISTIC
-
+ 
   /begin CHARACTERISTIC Vehicle_Speed
     "Vehicle Speed in km/h"
     VALUE 0x2010
@@ -35,7 +35,7 @@ ASAP2_VERSION 1 61
     FORMAT "%4.0"
     UNIT "km/h"
   /end CHARACTERISTIC
-
+ 
   /begin CHARACTERISTIC Coolant_Temperature
     "Coolant Temperature in Celsius"
     VALUE 0x2020
@@ -44,7 +44,7 @@ ASAP2_VERSION 1 61
     FORMAT "%3.1"
     UNIT "C"
   /end CHARACTERISTIC
-
+ 
   /begin CHARACTERISTIC Battery_Voltage
     "Battery Voltage in Volts"
     VALUE 0x2030
@@ -54,5 +54,5 @@ ASAP2_VERSION 1 61
     UNIT "V"
   /end CHARACTERISTIC
 /end MODULE
-
+ 
 /end PROJECT
