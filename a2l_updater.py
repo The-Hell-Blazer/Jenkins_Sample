@@ -24,8 +24,7 @@ def update_a2l_file(a2l_file, address_map):
     report_dir = "."
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_file = f"{os.path.splitext(a2l_file)[0]}_backup.a2l"
-
+    backup_file = "sample_backup.a2l"
     if not os.path.exists(backup_file):
         shutil.copy(a2l_file, backup_file)
         print(f" Backup created: {backup_file}")
@@ -41,7 +40,6 @@ def update_a2l_file(a2l_file, address_map):
             original_line = line
             for old_addr, new_addr in address_map.items():
 
-                # lowercase line for case-insensitive match
                 if old_addr in original_line.lower():
                     pattern = re.compile(re.escape(old_addr), re.IGNORECASE)
                     line = re.sub(pattern, new_addr, line)
@@ -57,7 +55,6 @@ def update_a2l_file(a2l_file, address_map):
     changed_count = len(changed_addresses)
     unchanged_count = len(address_map) - changed_count
 
-    # CSV output
     metrics_file = os.path.join(report_dir, "bar_metrics.csv")
     with open(metrics_file, "w", encoding="utf-8") as bar_csv:
         bar_csv.write("Category,Count\n")
@@ -131,7 +128,6 @@ def update_a2l_file(a2l_file, address_map):
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
 
-    # Log output
     log_file = os.path.join(report_dir, "update_log.txt")
     with open(log_file, "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
@@ -149,7 +145,6 @@ def update_a2l_file(a2l_file, address_map):
 def main():
     ini_file = "address.ini"
     a2l_file = "sample.a2l"
-    # a2l_file = next((f for f in os.listdir(".") if f.endswith(".a2l") and not f.startswith("a2l_updater")), None)
 
     if not a2l_file:
         print(" No .a2l file found in the current directory.")
