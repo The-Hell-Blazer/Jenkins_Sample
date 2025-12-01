@@ -20,7 +20,7 @@ ASAP2_VERSION 1 61
 /begin MODULE Sample_Module "Main ECU Module"
   /begin CHARACTERISTIC Engine_Speed
     "Engine Speed in RPM"
-    VALUE 0x10000
+    VALUE 0x1000
     ECU_ADDRESS 0x1000
     TYPE VALUE
     FORMAT "%6.0"
@@ -29,8 +29,8 @@ ASAP2_VERSION 1 61
 
   /begin CHARACTERISTIC Vehicle_Speed
     "Vehicle Speed in km/h"
-    VALUE 0x10100
-    ECU_ADDRESS 0x1010
+    VALUE 0x1010
+    ECU_ADDRESS 0x10100
     TYPE VALUE
     FORMAT "%4.0"
     UNIT "km/h"
@@ -38,7 +38,7 @@ ASAP2_VERSION 1 61
 
   /begin CHARACTERISTIC Coolant_Temperature
     "Coolant Temperature in Celsius"
-    VALUE 0x10200
+    VALUE 0x1020
     ECU_ADDRESS 0x1020
     TYPE VALUE
     FORMAT "%3.1"
@@ -47,7 +47,7 @@ ASAP2_VERSION 1 61
 
   /begin CHARACTERISTIC Battery_Voltage
     "Battery Voltage in Volts"
-    VALUE 0x10300
+    VALUE 0x1030
     ECU_ADDRESS 0x1031
     TYPE VALUE
     FORMAT "%2.2"
