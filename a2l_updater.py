@@ -1,4 +1,3 @@
-a2l_updater.py:
 import os
 import shutil
 import datetime
