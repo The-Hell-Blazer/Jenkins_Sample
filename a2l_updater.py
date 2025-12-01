@@ -41,7 +41,8 @@ def update_a2l_file(a2l_file, address_map):
             for old_addr, new_addr in address_map.items():
 
                 if old_addr in original_line.lower():
-                    pattern = re.compile(re.escape(old_addr), re.IGNORECASE)
+                    pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
+                    # pattern = re.compile(re.escape(old_addr), re.IGNORECASE)
                     line = re.sub(pattern, new_addr, line)
 
                     total_replacement_occurrences += 1
