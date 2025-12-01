@@ -12,91 +12,100 @@ def load_address_map(ini_file):
     address_map = {}
     for section in config.sections():
         for key in config[section]:
-            clean_key = key.strip().lower()
-            clean_val = config[section][key].strip().lower()
-            address_map[clean_key] = clean_val
-
-    print("DEBUG address_map:", address_map)
+            address_map[key.strip()] = config[section][key].strip()
     return address_map
 
 
 def update_a2l_file(a2l_file, address_map):
+    backup_file = a2l_file.replace(".a2l", "_backup.a2l")
 
-    # ----- PROBLEM 1 FIX: ALWAYS CREATE BACKUP -----
-    backup_file = "sample_backup.a2l"
-    shutil.copy(a2l_file, backup_file)
-    print(f"Backup created: {backup_file}")
+    if not os.path.exists(backup_file):
+        shutil.copy(a2l_file, backup_file)
+        print(f"Backup created: {backup_file}")
+    else:
+        print(f"Using existing backup: {backup_file}")
+
+    with open(a2l_file, "r", encoding="utf-8") as f:
+        lines = f.readlines()
 
     updated_lines = []
-    found_addresses = set()      # For accurate CHANGE count
-    total_replacement_occurrences = 0
+    unique_changes = set()
+    unchanged = 0
+    replaced_count = 0
 
-    with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
-        for line in infile:
-            original_line = line
+    for line in lines:
+        original_line = line
 
-            # ----- Only look inside ECU_ADDRESS lines -----
-            if "ecu_address" in original_line.lower():
+        for old_addr, new_addr in address_map.items():
+            # Regex pattern to match complete address words
+            pattern = rf'(\b){re.escape(old_addr)}(\b)'
 
-                for old_addr, new_addr in address_map.items():
+            # Use lambda to avoid \1 replacement issues
+            new_line = re.sub(pattern, lambda m: m.group(1) + new_addr + m.group(2), line)
 
-                    # Strict matching only for ECU_ADDRESS <space> address
-                    pattern = re.compile(
-                        rf'(ECU_ADDRESS\s+){re.escape(old_addr)}\b',
-                        re.IGNORECASE
-                    )
+            if new_line != line:
+                line = new_line
+                unique_changes.add(old_addr)
+                replaced_count += 1
 
-                    if re.search(pattern, original_line):
-                        found_addresses.add(old_addr)
+        if line == original_line:
+            unchanged += 1
 
-                        # Replace only the address, keep ECU_ADDRESS keyword
-                        line = re.sub(pattern, rf'\1{new_addr}', line)
+        updated_lines.append(line)
 
-                        total_replacement_occurrences += 1
+    with open(a2l_file, "w", encoding="utf-8") as f:
+        f.writelines(updated_lines)
 
-            updated_lines.append(line)
+    print(f"Updated {a2l_file} successfully!")
+    print(f"Unique addresses changed: {len(unique_changes)}")
+    print(f"Unchanged addresses: {unchanged}")
+    print(f"Total occurrences replaced: {replaced_count}")
 
-    # Rewrite file with updated content
-    with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
-        outfile.writelines(updated_lines)
 
-    changed_count = len(found_addresses)
-    unchanged_count = len(address_map) - changed_count
+def generate_html_report(output_file, address_map, changed_count, unchanged_count, replaced_count):
+    html_content = f"""
+    <html>
+    <head>
+        <title>Address Change Analysis Report</title>
+    </head>
+    <body>
+        <h2>Address Change Analysis Report</h2>
+        <p><b>Total mappings loaded:</b> {len(address_map)}</p>
+        <p><b>Unique addresses changed:</b> {changed_count}</p>
+        <p><b>Unchanged addresses:</b> {unchanged_count}</p>
+        <p><b>Total occurrences replaced:</b> {replaced_count}</p>
+    </body>
+    </html>
+    """
 
-    print(f"Changed addresses: {found_addresses}")
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(html_content)
 
-    # Logging
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    with open("update_log.txt", "a", encoding="utf-8") as log:
-        log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
-        log.write(f"Unique addresses changed: {changed_count}\n")
-        log.write(f"Unchanged addresses: {unchanged_count}\n")
-        log.write(f"Total replacement occurrences: {total_replacement_occurrences}\n")
-
-    print("\nUPDATE SUMMARY")
-    print(f"Unique addresses changed: {changed_count}")
-    print(f"Unchanged addresses: {unchanged_count}")
-    print(f"Total occurrences replaced: {total_replacement_occurrences}")
+    print(f"HTML report: {output_file}")
 
 
 def main():
-    ini_file = "address.ini"
-    a2l_file = "sample.a2l"
-
-    if not os.path.exists(a2l_file):
-        print(" sample.a2l not found.")
-        return
-
-    if not os.path.exists(ini_file):
-        print(" address.ini file not found.")
-        return
+    ini_file = "Address.ini"
+    a2l_file = "sample.a2l"   # <-- FIXED (now reads sample.a2l)
 
     address_map = load_address_map(ini_file)
+    print("DEBUG address_map:", address_map)
+    print(f"Loaded {len(address_map)} address mappings from {ini_file}")
+
     update_a2l_file(a2l_file, address_map)
+
+    generate_html_report(
+        "Address_Change_Analysis_Report.html",
+        address_map,
+        changed_count=len(address_map),
+        unchanged_count=0,
+        replaced_count=0
+    )
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
