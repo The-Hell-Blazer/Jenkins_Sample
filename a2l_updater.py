@@ -29,24 +29,15 @@ def update_a2l_file(a2l_file, address_map):
     print(f" Backup saved: {backup_file}")
 
     updated_lines = []
-    total_replacement_occurrences = 0
-    changed_addresses = set()
     changed_pairs_dict = {}  # old_addr -> new_addr (unique)
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
         for line in infile:
-            original_line = line
             for old_addr, new_addr in address_map.items():
-                if "ecu_address" in original_line.lower():
-                    pattern_exact = re.compile(rf'\bECU_ADDRESS\s+{re.escape(old_addr)}\b', re.IGNORECASE)
-                    if re.search(pattern_exact, original_line):
-                        changed_addresses.add(old_addr)
-
                 pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
                 new_line = re.sub(pattern, new_addr, line)
 
                 if new_line != line:
-                    total_replacement_occurrences += 1
                     line = new_line
                     # Record unique changed address
                     if old_addr not in changed_pairs_dict:
@@ -57,15 +48,17 @@ def update_a2l_file(a2l_file, address_map):
     with open(a2l_file, "w", encoding="utf-8", errors="replace") as outfile:
         outfile.writelines(updated_lines)
 
-    changed_count = len(changed_addresses)
+    changed_count = len(changed_pairs_dict)
     unchanged_count = len(address_map) - changed_count
 
+    # Create bar metrics CSV
     metrics_file = os.path.join(report_dir, "bar_metrics.csv")
     with open(metrics_file, "w", encoding="utf-8") as bar_csv:
         bar_csv.write("Category,Count\n")
         bar_csv.write(f"Changed,{changed_count}\n")
         bar_csv.write(f"Unchanged,{unchanged_count}\n")
 
+    # Create HTML report
     html_content = f"""  
     <html>
     <head>
@@ -132,25 +125,22 @@ def update_a2l_file(a2l_file, address_map):
     with open(html_report_path, "w", encoding="utf-8") as htmlfile:
         htmlfile.write(html_content)
 
+    # Write log
     log_file = os.path.join(report_dir, "update_log.txt")
     with open(log_file, "a", encoding="utf-8", errors="replace") as log:
         log.write(f"\nUpdated {a2l_file} at {timestamp}\n")
         log.write(f"Unique addresses changed: {changed_count}\n")
-        log.write(f"Unchanged addresses: {unchanged_count}\n")
-        log.write(f"Total replacement occurrences: {total_replacement_occurrences}\n")
-
-        # Write unique changed addresses to log
+        log.write(f"Unchanged addresses: {unchanged_count}\n\n")  # newline added
         if changed_pairs_dict:
             log.write("Changed Address Pairs:\n")
             for old, new in changed_pairs_dict.items():
                 log.write(f"{old} → {new}\n")
 
+    # Console output
     print(f" Updated {a2l_file} successfully!")
     print(f" Unique addresses changed: {changed_count}")
-    print(f" Unchanged addresses: {unchanged_count}")
-    print(f" Total occurrences replaced: {total_replacement_occurrences}")
+    print(f" Unchanged addresses: {unchanged_count}\n")  # newline for readability
 
-    # ASCII-safe console output
     if changed_pairs_dict:
         print(" Changed Address Pairs:")
         for old, new in changed_pairs_dict.items():
