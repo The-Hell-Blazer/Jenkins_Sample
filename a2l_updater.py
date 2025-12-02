@@ -33,15 +33,17 @@ def update_a2l_file(a2l_file, address_map):
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
         for line in infile:
-            for old_addr, new_addr in address_map.items():
-                pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
-                new_line = re.sub(pattern, new_addr, line)
+            # Only attempt replacement if line contains ECU_ADDRESS
+            if "ecu_address" in line.lower():
+                for old_addr, new_addr in address_map.items():
+                    pattern = re.compile(rf'\b{re.escape(old_addr)}\b', re.IGNORECASE)
+                    new_line = re.sub(pattern, new_addr, line)
 
-                if new_line != line:
-                    line = new_line
-                    # Record unique changed address
-                    if old_addr not in changed_pairs_dict:
-                        changed_pairs_dict[old_addr] = new_addr
+                    if new_line != line:
+                        line = new_line
+                        # Record unique changed address
+                        if old_addr not in changed_pairs_dict:
+                            changed_pairs_dict[old_addr] = new_addr
 
             updated_lines.append(line)
 
