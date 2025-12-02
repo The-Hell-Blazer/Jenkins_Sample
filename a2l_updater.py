@@ -31,7 +31,7 @@ def update_a2l_file(a2l_file, address_map):
     updated_lines = []
     total_replacement_occurrences = 0
     changed_addresses = set()
-    changed_pairs = []
+    changed_pairs_dict = {}  # old_addr -> new_addr (unique)
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
         for line in infile:
@@ -48,7 +48,9 @@ def update_a2l_file(a2l_file, address_map):
                 if new_line != line:
                     total_replacement_occurrences += 1
                     line = new_line
-                    changed_pairs.append((old_addr, new_addr))
+                    # Record unique changed address
+                    if old_addr not in changed_pairs_dict:
+                        changed_pairs_dict[old_addr] = new_addr
 
             updated_lines.append(line)
 
@@ -137,18 +139,22 @@ def update_a2l_file(a2l_file, address_map):
         log.write(f"Unchanged addresses: {unchanged_count}\n")
         log.write(f"Total replacement occurrences: {total_replacement_occurrences}\n")
 
-        log.write("Changed Address Pairs:\n")
-        for old, new in changed_pairs:
-            log.write(f"{old} → {new}\n") 
+        # Write unique changed addresses to log
+        if changed_pairs_dict:
+            log.write("Changed Address Pairs:\n")
+            for old, new in changed_pairs_dict.items():
+                log.write(f"{old} → {new}\n")
 
     print(f" Updated {a2l_file} successfully!")
     print(f" Unique addresses changed: {changed_count}")
     print(f" Unchanged addresses: {unchanged_count}")
     print(f" Total occurrences replaced: {total_replacement_occurrences}")
 
-    print(" Changed Address Pairs:")
-    for old, new in changed_pairs:
-        print(f" {old} -> {new}") 
+    # ASCII-safe console output
+    if changed_pairs_dict:
+        print(" Changed Address Pairs:")
+        for old, new in changed_pairs_dict.items():
+            print(f" {old} -> {new}")
 
     print(f"HTML report: {html_report_path}")
 
@@ -172,6 +178,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
