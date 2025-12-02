@@ -31,7 +31,7 @@ def update_a2l_file(a2l_file, address_map):
     updated_lines = []
     total_replacement_occurrences = 0
     changed_addresses = set()
-    changed_pairs = []        # NEW: collect changed address pairs
+    changed_pairs = []
 
     with open(a2l_file, "r", encoding="utf-8", errors="replace") as infile:
         for line in infile:
@@ -48,7 +48,7 @@ def update_a2l_file(a2l_file, address_map):
                 if new_line != line:
                     total_replacement_occurrences += 1
                     line = new_line
-                    changed_pairs.append((old_addr, new_addr))   # NEW
+                    changed_pairs.append((old_addr, new_addr))
 
             updated_lines.append(line)
 
@@ -137,10 +137,9 @@ def update_a2l_file(a2l_file, address_map):
         log.write(f"Unchanged addresses: {unchanged_count}\n")
         log.write(f"Total replacement occurrences: {total_replacement_occurrences}\n")
 
-        # NEW: Write address change list
         log.write("Changed Address Pairs:\n")
         for old, new in changed_pairs:
-            log.write(f"{old} → {new}\n")
+            log.write(f"{old} → {new}\n") 
 
     print(f" Updated {a2l_file} successfully!")
     print(f" Unique addresses changed: {changed_count}")
@@ -149,7 +148,7 @@ def update_a2l_file(a2l_file, address_map):
 
     print(" Changed Address Pairs:")
     for old, new in changed_pairs:
-        print(f" {old} → {new}")
+        print(f" {old} -> {new}") 
 
     print(f"HTML report: {html_report_path}")
 
@@ -173,7 +172,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
